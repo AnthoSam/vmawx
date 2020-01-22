@@ -1,0 +1,29 @@
+---
+- hosts: vcenter
+#  become: no
+  gather_facts: False
+  vars:
+  tasks:
+  - name: Create a New Virtual Machine
+    vmware_guest:
+      hostname: vmlabvct001.vmwarelab.local
+      username: administrator@vsphere.local
+      password: Password1234.
+      validate_certs: no
+      name: Linux_VM
+      folder: vm
+      datacenter: Datacenter
+      guest_id: centos7_64Guest
+      disk:
+      - size_gb: 20
+        type: thin
+        datastore: datastore_vmlabesx001
+      hardware:
+        memory_mb: 2048
+        num_cpus: 1
+        scsi: paravirtual
+      networks:
+      - name: VM Network
+        device_type: vmxnet3
+      state: poweredoff
+    delegate_to: localhost
